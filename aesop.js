@@ -9,10 +9,12 @@ I envisage that the data store has all the data stored locally we just store it 
 
 We can also distribute the aesop performance over many machines in a cluster as there is no inter-dependance between the nodes, they only rely on the event communication mechanism and on the central redis server that they update
 */
+var eventBroker = require("./eventBroker");
 
 require("sys");
 MEH={};
-function create_meh(name,inputs,callback){
+//inputs is a list of channels to susbcribe to 
+function createMeh(name,inputs,callback){
     MEH[name] = initialize(name,inputs,callback);
     return MEH[name];
 }
@@ -24,13 +26,17 @@ function initialize (name,inputs,callback){
     data['callback'] = callback;
     console.log("assigned name as " + data['name']);
     console.log("assigned inputs to " + data['inputs']);
+    inputs.forEach(function(i) {
+	eventBroker.addChannel(i);
+	eventBroker.subscribe(i,callback);
+    }); 
     return data;
 }
 function startMeh(name){
     meh = MEH[name];
-    
+    meh.started = true;
 }
-exports.create_meh = create_meh;
-
+exports.createMeh = createMeh;
+exports.start = startMeh;
 
 

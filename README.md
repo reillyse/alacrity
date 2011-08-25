@@ -34,5 +34,7 @@ querystring
 
 an installed redis server on the localhost 
 
+this project only got started a couple of days ago so its in its infancy and may hurt your eyes... 
 
+more info http://reillyse.posterous.com/
 to contact the author: reillyse@gmail.com

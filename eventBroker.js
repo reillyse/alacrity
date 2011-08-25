@@ -14,10 +14,11 @@ function createEvent(name,channel,payload){
     event['name'] = name;
     event['channel'] = channel;
     event['payload'] = payload;
+    addChannel(channel);
     return event;
 }
 
-function add_channel(name){
+function addChannel(name){
     if (CHANNELS[name]) {
 	console.log("channel already defined");
 	return false;
@@ -60,6 +61,6 @@ function publish(event){
     );
 }
 exports.createEvent = createEvent;
-exports.addChannel = add_channel;
+exports.addChannel = addChannel;
 exports.subscribe = subscribe;
 exports.publish=publish;
