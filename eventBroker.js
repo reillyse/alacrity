@@ -4,8 +4,18 @@
 
 // going to store all the callbacks in a hash, so an array of callbacks in a hash of 
 // whenever we get an event on a channel we call all the callbacks associated with it
+var util = require("util");
 
 CHANNELS = {};
+
+function createEvent(name,channel,payload){
+    console.log("event created with name  = " + name + " and channel = " + channel + " with a payload = " + payload );
+    var event = {};
+    event['name'] = name;
+    event['channel'] = channel;
+    event['payload'] = payload;
+    return event;
+}
 
 function add_channel(name){
     if (CHANNELS[name]) {
@@ -14,21 +24,42 @@ function add_channel(name){
     } else {
 	console.log("adding channel " + name);
 	CHANNELS[name] = [];
+	return true;
     }
 }
 
-function add_callbacks(channel,callback){
-    if(CHANNEL[channel]) {
-	CHANNEL[channel].append(callback);
+function subscribe(channel,callback){
+    if (CHANNELS[channel]) {
+	CHANNELS[channel].push(callback);
 	return true;
     } else {
 	return false;
     }
 }
-function fire(event){
 
-    channel = event.channel;
-    for (c in CHANNEL[channel]) {
-	c();
+
+function unsubscribe(channel,callback){
+    if (CHANNELS[channel]) {
+	c = CHANNELS[channel].indexOf(callback);
+	if (c >= 0) {
+	    CHANNELS[channel].splice(c,1);
+	    return true;
+	} 
+	
     }
+	return false;
 }
+
+function publish(event){
+    channel = event.channel;
+    console.log(util.inspect(CHANNELS[channel]));
+    CHANNELS[channel].forEach( 
+	function (handler) {
+	handler(event);
+      }
+    );
+}
+exports.createEvent = createEvent;
+exports.addChannel = add_channel;
+exports.subscribe = subscribe;
+exports.publish=publish;
