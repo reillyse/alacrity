@@ -1,32 +1,41 @@
-// testing event broker
+// Testing Event broker
+// and aesop functionality
+
 var util = require("util");
 var broker =require("./eventBroker");
 var aesop = require("./aesop.js");
 event = broker.createEvent("first1","seans","horse");
 
-
-
-
-function handler(event) {
-    console.log("in the handler");
-    console.log("the event is " + util.inspect(event));
-}
-function handler2(event) {
-    console.log("in the second handler");
-    console.log("the event is " + util.inspect(event));
-}
-function me_handler(meh) {
-    console.log("in the MEH handler");
-    console.log("the meh is " + util.inspect(meh));
+function me_handler(event) {
+    if(!this.checkInputs(event,this)){
+	return false;
+    }
+    console.log(this.input_values['joes'] + " " + this.input_values['seans']);    
+    return 1;
 }
 
 channel = "seans";
-broker.subscribe(channel,handler);
-broker.subscribe(channel,handler2);
-broker.publish(event);
-inputs = ["seans"];
+channel2 = "joes";
+inputs = [channel,channel2];
 
-aesop.createMeh("first1",inputs,me_handler);
-aesop.start("first1");
+aesop.createMeh("first_meh",inputs,me_handler);
+aesop.start("first_meh");
 
 broker.publish(event);
+event2 = broker.createEvent("second1","joes","cow");
+broker.publish(event2);
+
+channel3= "socks";
+inputs2 = [channel3];
+
+function second_handler(event){
+    if(!this.checkInputs(event,this)){
+	return false;
+    }
+    console.log("result of meh is ..");
+    console.log(this.input_values['socks']);
+}
+aesop.createMeh("second_meh",inputs2,second_handler);
+aesop.start("second_meh");
+event3 = broker.createEvent("new_event","socks","paisely");
+broker.publish(event3);
