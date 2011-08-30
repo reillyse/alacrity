@@ -1,6 +1,6 @@
 var redis = require("redis-node");
 var client = redis.createClient();    // Create the client
-client.select(3);                     // Select database 2
+client.select(4);                     // Select database 2
 
 function updateRank(player,rank,response){
     console.log("setting player num = " + player + " to rank = " + rank);

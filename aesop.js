@@ -15,6 +15,10 @@ var eventBroker = require("./eventBroker");
 
 require("sys");
 MEH={};
+function hasMEH(name){
+    return MEH[name];
+}
+
 //inputs is a list of channels to susbcribe to 
 function createMeh(name,inputs,callback){
     MEH[name] = initialize(name,inputs,callback);
@@ -62,9 +66,10 @@ function checkInputs(event,meh){
 	return false;
 	
     }
+    return true;
 }
 
 exports.createMeh = createMeh;
 exports.start = startMeh;
-
+exports.hasMEH = hasMEH;
 

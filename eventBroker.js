@@ -52,17 +52,21 @@ function unsubscribe(channel,object){
 	} 
 	
     }
+    console.log("cannot find channel");
     return false;
 }
 
 function publish(event){
+    console.log("publishing");
     channel = event.channel;
-    console.log(util.inspect(CHANNELS[channel]));
+    console.log(util.inspect(CHANNELS));
     CHANNELS[channel].forEach( 
 	function (object) {
+	    console.log("calling callback");
 	    object.callback(event);
 	}
     );
+    console.log("finished publishing");
 }
 exports.createEvent = createEvent;
 exports.addChannel = addChannel;
