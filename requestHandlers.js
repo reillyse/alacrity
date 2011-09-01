@@ -58,7 +58,7 @@ function aggregate_rank(event){
     if(!this.checkInputs(event,this)){
 	console.log("no rank yet");
 	event.response.writeHead(200, {"Content-Type": "text/json"});
-	body = JSON.stringify(-1);
+	body = JSON.stringify({'rank':-1});
 	event.response.write(body);
 	event.response.end();
     } else {
